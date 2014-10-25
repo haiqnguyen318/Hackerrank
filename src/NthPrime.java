@@ -19,25 +19,29 @@ public class NthPrime {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         int T = in.nextInt();
+       
+        //sieve of Erastothenes, based on the constraint that N <= 10^4
+        boolean[] marked = new boolean[2000000];
+        for (int k = 2; k < marked.length; k++) {
+          if (marked[k]) continue;
+          else {
+            int prime = k;
+            for (int j = 2*k; j < marked.length; j += k) {
+              marked[j] = true;
+            }
+          }
+        }
+        
         StringBuilder sb = new StringBuilder();
         for (int t = 0; t < T; t++) {
             int N = in.nextInt();
-          
-            if (N == 1) {
-              sb.append(2 + "\n");
-            } 
-            
-            else {
-              int ct = 2;
-              int number = 3;
-              while (ct < N) {
-                number += 2;
-                if (isPrime(number)) {
-                  ct++;
-                }
-              }
-              sb.append(number + "\n");
+            int ct = 0;
+            int idx = 1;
+            while (ct < N) {
+              idx++;
+              if (!marked[idx]) ct++; 
             }
+            sb.append(idx + "\n");
         }
         in.close();
         System.out.println(sb.toString());
